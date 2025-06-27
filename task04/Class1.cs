@@ -1,10 +1,15 @@
 ﻿public interface ISpaceship
 {
-    void MoveForward();      // Движение вперед
-    void Rotate(int angle);  // Поворот на угол (градусы)
-    void Fire();             // Выстрел ракетой
-    int Speed { get; }       // Скорость корабля
-    int FirePower { get; }   // Мощность выстрела
+    void MoveForward();      
+    void Rotate(int angle);  
+    void Fire();             
+    int Speed { get; }       
+    int FirePower { get; }
+    public int Position { get; set; }
+    public int HealthPoints { get; set; }
+    public int Angle { get; set; }
+    public int NumberOfShells { get; set; }
+    public ISpaceship? Target { get; set; }
 }
 
 public class Fighter : ISpaceship
