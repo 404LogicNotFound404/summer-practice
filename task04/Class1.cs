@@ -36,6 +36,7 @@ public class Fighter : ISpaceship
             throw new InvalidOperationException("Error");
         }
     }
+
     public void Rotate(int angle)
     {
         Angle += angle;
@@ -43,7 +44,6 @@ public class Fighter : ISpaceship
 
         if (Angle < 0) Angle += 360;
     }
-
 }
 
 public class Cruiser : ISpaceship
@@ -55,6 +55,7 @@ public class Cruiser : ISpaceship
     public int Angle { get; set; } = 0;
     public int NumberOfShells { get; set; } = 8;
     public ISpaceship? Target { get; set; }
+
     public void MoveForward() => Position += Speed;
 
     public void Fire()
@@ -66,6 +67,7 @@ public class Cruiser : ISpaceship
         }
         return;
     }
+
     public void Rotate(int angle)
     {
         Angle += angle;
