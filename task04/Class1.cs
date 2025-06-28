@@ -5,11 +5,6 @@
     void Fire();             
     int Speed { get; }       
     int FirePower { get; }
-    public int Position { get; set; }
-    public int HealthPoints { get; set; }
-    public int Angle { get; set; }
-    public int NumberOfShells { get; set; }
-    public ISpaceship? Target { get; set; }
 }
 
 public class Fighter : ISpaceship
