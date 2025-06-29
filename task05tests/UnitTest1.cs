@@ -5,7 +5,7 @@ using Xunit;
 public class TestClass
 {
     public int PublicField;
-    private string? _privateField;
+    private string _privateField = string.Empty;
     public int Property { get; set; }
 
     public void Method() { }
