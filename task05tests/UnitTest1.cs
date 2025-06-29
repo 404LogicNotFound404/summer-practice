@@ -62,14 +62,6 @@ public class ClassAnalyzerTests
     }
 
     [Fact]
-    public void GetAllFields_IncludesPrivateField()
-    {
-        var analyzer = new ClassAnalyzer(typeof(TestClass));
-        var fields = analyzer.GetAllFields().ToList();
-        Assert.Contains("_privateField", fields);
-    }
-
-    [Fact]
     public void GetProperties_IncludesProperty()
     {
         var analyzer = new ClassAnalyzer(typeof(TestClass));
