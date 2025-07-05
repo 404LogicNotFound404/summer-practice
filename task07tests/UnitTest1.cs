@@ -40,4 +40,16 @@ public class AttributeReflectionTests
         Assert.Equal(1, attribute.Major);
         Assert.Equal(0, attribute.Minor);
     }
+
+    [Fact]
+    public void ReflectionHelperPrintTypeInfo_CheckCorrectOutput() 
+    {
+        var output = new StringWriter();
+        Console.SetOut(output);
+
+        string expected = "Пример класса\r\n1.0\r\nTestMethod Тестовый метод\r\nNumber Числовое свойство\r\n";
+
+        ReflectionHelper.PrintTypeInfo(typeof(SampleClass));
+        Assert.Equal(expected, output.ToString());
+    }
 }

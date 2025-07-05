@@ -54,14 +54,14 @@ public static class ReflectionHelper
 
         var allMethods = type.GetMethods();
         allMethods.Where(s => s.GetCustomAttribute<DisplayNameAttribute>() != null)
-                .Select(s => $"{s.Name} {s.GetCustomAttribute<DisplayNameAttribute>()}")
+                .Select(s => $"{s.Name} {s.GetCustomAttribute<DisplayNameAttribute>()!.DisplayName}")
                 .ToList()
                 .ForEach(s => Console.WriteLine(s));
 
 
         var allProperties = type.GetProperties();
         allProperties.Where(s => s.GetCustomAttribute<DisplayNameAttribute>() != null)
-                    .Select(s => $"{s.Name} {s.GetCustomAttribute<DisplayNameAttribute>()}")
+                    .Select(s => $"{s.Name} {s.GetCustomAttribute<DisplayNameAttribute>()!.DisplayName}")
                     .ToList()
                     .ForEach(s => Console.WriteLine(s));
     }
