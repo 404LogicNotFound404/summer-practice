@@ -47,7 +47,7 @@ public class AttributeReflectionTests
         var output = new StringWriter();
         Console.SetOut(output);
 
-        string expected = "Пример класса\r\n1.0\r\nTestMethod Тестовый метод\r\nNumber Числовое свойство\r\n";
+        string expected = "Пример класса\n1.0\nTestMethod Тестовый метод\nNumber Числовое свойство\n";
 
         ReflectionHelper.PrintTypeInfo(typeof(SampleClass));
         Assert.Equal(expected, output.ToString());
