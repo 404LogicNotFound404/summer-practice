@@ -11,7 +11,7 @@ public class CommandRunner
         var testDir2 = Path.Combine(Path.GetTempPath(), "TestDir2");
         Directory.CreateDirectory(testDir2);
         File.WriteAllText(Path.Combine(testDir2, "file1.txt"), "Text");
-        File.WriteAllText(Path.Combine(testDir2, "file2.log"), "Log");
+        File.WriteAllText(Path.Combine(testDir2, "file2.log"), "log");
 
         var commands = assembly.GetTypes()
                                .Where(t => typeof(ICommand).IsAssignableFrom(t) && !t.IsInterface)
@@ -35,7 +35,7 @@ public class CommandRunner
 
             if (command == typeof(FindFilesCommand))
             {
-                var findFilesCommand = (ICommand)Activator.CreateInstance(command, testDir2, "*.Log")!;
+                var findFilesCommand = (ICommand)Activator.CreateInstance(command, testDir2, "*.log")!;
                 if (findFilesCommand != null)
                 {
                     findFilesCommand.Execute();
