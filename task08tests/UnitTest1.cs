@@ -32,7 +32,7 @@ public class FileSystemCommandsTests
         var command = new DirectorySizeCommand(testDir1);
         command.Execute();
 
-        string expected = "10\r\n";
+        string expected = "10\n";
         Assert.Equal(expected, output.ToString());
 
         Directory.Delete(testDir1, true);
@@ -66,7 +66,7 @@ public class FileSystemCommandsTests
         var command = new FindFilesCommand(testDir4, "*.txt");
         command.Execute();
 
-        string expected = "file1.txt\r\n";
+        string expected = "file1.txt\n";
         Assert.Equal(expected, output.ToString());
 
         Directory.Delete(testDir4, true);
@@ -78,7 +78,7 @@ public class FileSystemCommandsTests
         var output = new StringWriter();
         Console.SetOut(output);
 
-        string expected = "7\r\nfile2.log\r\n";
+        string expected = "7\nfile2.log\n";
 
         CommandRunner.Main();
         Assert.Equal(expected, output.ToString());
