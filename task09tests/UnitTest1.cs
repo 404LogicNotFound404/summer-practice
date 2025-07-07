@@ -7,7 +7,7 @@ namespace task09tests
         {
             var output = new StringWriter();
             Console.SetOut(output);
-            string ex = "\r\n";
+            string ex = "\n";
 
             string expected =  $"Класс: DisplayNameAttribute{ex}" +
                 $"{ex}" +
@@ -48,7 +48,7 @@ namespace task09tests
                 $"Параметры метода PrintTypeInfo{ex}" +
                 $"Параметр: type тип: Type{ex}{ex}";
 
-            Program.Main(new[] { "task07" });
+            Program.Main(new[] { "task07.dll" });
             Assert.Equal(expected, output.ToString());
         }
     }
