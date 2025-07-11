@@ -7,7 +7,7 @@ namespace task10tests
         {
             var output = new StringWriter();
             Console.SetOut(output);
-            string ex = "\n";
+            string ex = Environment.NewLine;
             string expected = $"Class1{ex}" +
                 $"Class4{ex}" +
                 $"Class2{ex}" +
