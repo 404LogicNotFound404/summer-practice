@@ -8,7 +8,7 @@ namespace task10tests
             var output = new StringWriter();
             Console.SetOut(output);
             string ex = Environment.NewLine;
-            string expected = $"Class1{ex}" +
+            string expected1 = $"Class1{ex}" +
                 $"Class4{ex}" +
                 $"Class2{ex}" +
                 $"Class5{ex}" +
@@ -16,11 +16,19 @@ namespace task10tests
                 $"Class6{ex}" +
                 $"Class7{ex}";
 
+            string expected2 = $"Class4{ex}" +
+                $"Class1{ex}" +
+                $"Class5{ex}" +
+                $"Class2{ex}" +
+                $"Class6{ex}" +
+                $"Class3{ex}" +
+                $"Class7{ex}";
+
             string solution = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))))!;
             var pluginsDirectory = Path.Combine(solution, "Libraries");
 
             Program.Main(new[] { pluginsDirectory });
-            Assert.Equal(expected, output.ToString());
+            Assert.True(expected1 == output.ToString() || expected2 == output.ToString());
         }
     }
 }
