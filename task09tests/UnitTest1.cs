@@ -7,7 +7,7 @@ namespace task09tests
         {
             var output = new StringWriter();
             Console.SetOut(output);
-            string ex = Environment.NewLine; ;
+            string ex = Environment.NewLine;
 
             string expected =  $"Класс: DisplayNameAttribute{ex}" +
                 $"{ex}" +
