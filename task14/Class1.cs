@@ -5,10 +5,8 @@ public class DefiniteIntegral
     public static double Solve(double a, double b, Func<double, double> function, double step, int threadsnumber)
     {
         double result = 0;
-        double stepIntegral = (b - a)/ threadsnumber;
-        Barrier barrier = new Barrier(threadsnumber + 1);
-
-        for (int i = 0; i < threadsnumber; i++)
+        double stepIntegral = (b - a) / threadsnumber;
+        Parallel.For(0, threadsnumber, new ParallelOptions { MaxDegreeOfParallelism = threadsnumber }, i =>
         {
             double start = a + i * stepIntegral;
             double end = 0;
@@ -21,23 +19,17 @@ public class DefiniteIntegral
                 end = start + stepIntegral;
             }
 
-            Thread integral = new Thread(() => 
+            double newIntegar = Integral(start, end, function, step);
+            double initial;
+            double newresult;
+            do
             {
-                double newIntegar = Integral(start, end, function, step);
-                double initial;
-                double newresult;
-                do
-                {
-                    initial = result;
-                    newresult = initial + newIntegar;
-                }
-                while (initial != Interlocked.CompareExchange(ref result, newresult, initial));
-                barrier.SignalAndWait();
-            });
-            
-            integral.Start();
-        }
-        barrier.SignalAndWait();
+                initial = result;
+                newresult = initial + newIntegar;
+            }
+            while (initial != Interlocked.CompareExchange(ref result, newresult, initial));
+
+        });
         return result;
     }
 
@@ -46,7 +38,7 @@ public class DefiniteIntegral
         int NumberSplitsIntegral = (int)((b - a) / step) + 1;
         double result = 0;
 
-        for (int i = 0; i < NumberSplitsIntegral; i++) 
+        for (int i = 0; i < NumberSplitsIntegral; i++)
         {
             double start = a + i * step;
             double end = 0;
