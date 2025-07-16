@@ -8,7 +8,7 @@
             this.nameDirectory = nameDirectory;
         }
         public void Execute()
-            => Console.WriteLine(Directory.GetFiles(nameDirectory)
+            => Console.WriteLine(Directory.GetFiles(nameDirectory,"*",SearchOption.AllDirectories)
                                           .Select(s => new FileInfo(s).Length)
                                           .Sum());
     }
@@ -23,7 +23,7 @@
             this.mask = mask;
         }
         public void Execute()
-            => Directory.GetFiles(nameDirectory, mask)
+            => Directory.GetFiles(nameDirectory, mask, SearchOption.AllDirectories)
                         .Select(Path.GetFileName)
                         .ToList()
                         .ForEach(s => Console.WriteLine(s));
