@@ -27,7 +27,7 @@ namespace task10tests
             string solution = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))))!;
             var pluginsDirectory = Path.Combine(solution, "Libraries");
 
-            Program.Main(new[] { pluginsDirectory });
+            PluginSearch.GetExecute(pluginsDirectory);
             Assert.True(expected1 == output.ToString() || expected2 == output.ToString());
         }
     }

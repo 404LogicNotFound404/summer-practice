@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 using AttributeAndInterface;
 
-public class Program
+public class PluginSearch
 {
-    public static void Main(string[] args)
+    public static void GetExecute(string args)
     {
-        var dllPaths = Directory.GetFiles(args[0], "*.dll", SearchOption.AllDirectories)
+        var dllPaths = Directory.GetFiles(args, "*.dll", SearchOption.AllDirectories)
                                 .Where(s => s.Contains(Path.Combine("bin", "Debug")))
                                 .Where(s => !s.Contains("AttributeAndInterface.dll"))
                                 .ToList();
@@ -67,6 +67,7 @@ public class Program
         }
     }
 }
+
 
 public class PluginInfo
 {
