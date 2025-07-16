@@ -24,18 +24,18 @@ class Program
             }
         });
 
-        int[] threadsnumbers = { 2, 3, 4, 5, 6};
+        int[] threadsnumbers = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
         Dictionary<int, double> FlowDependentSpeed = new Dictionary<int, double>();
         threadsnumbers.ToList().ForEach(threadnumber =>
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            for (int i = 0; i < 50; i++) 
+            for (int i = 0; i < 100; i++) 
             {
                 DefiniteIntegral.Solve(start, end, SIN, minstep, threadnumber);
             }
             stopwatch.Stop();
-            FlowDependentSpeed[threadnumber] = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency * 1000 / 50;
+            FlowDependentSpeed[threadnumber] = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency * 1000 / 100;
         });
 
         var plt = new Plot();
@@ -52,21 +52,23 @@ class Program
         double timeIntegral = 0;
         Stopwatch stopwatch1 = new Stopwatch();
         stopwatch1.Start();
-        for (int i = 0; i < 50; i++) 
+        for (int i = 0; i < 100; i++) 
         {
             DefiniteIntegral.Integral(start, end, SIN, minstep);
         }
         stopwatch1.Stop();
-        timeIntegral = (double)stopwatch1.ElapsedTicks / Stopwatch.Frequency * 1000 / 50;
+        timeIntegral = (double)stopwatch1.ElapsedTicks / Stopwatch.Frequency * 1000 / 100;
 
-        var percent = FlowDependentSpeed.Values.Min() / timeIntegral * 100;
+        var percent = (timeIntegral - FlowDependentSpeed.Values.Min()) / FlowDependentSpeed.Values.Min() * 100;
         if (percent > 15) 
         {
             string ex = Environment.NewLine;
             string file = $"Размер шага: {minstep}{ex}" +
                 $"Оптимальное кол-во потоков: {FlowDependentSpeed.Where(s => s.Value == FlowDependentSpeed.Values.Min())
                                                                  .Select(s => s.Key.ToString()).First()}{ex}" +
-                $"Скорость оптимальной многопоточной версии в сравнении с однопоточной: {Math.Round(percent, 1)}";
+                $"Скорость оптимальной многопоточной версии в сравнении с однопоточной: {Math.Round(percent, 1)}%{ex}" +
+                $"Скорость однопоточной: {Math.Round(timeIntegral, 2)}{ex}" +
+                $"Скорость многопоточной: {Math.Round(FlowDependentSpeed.Values.Min(), 2)}";
             File.WriteAllText(Path.Combine(path, "file.txt"), file);
         }
         else

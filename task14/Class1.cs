@@ -1,36 +1,22 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 public class DefiniteIntegral
 {
     public static double Solve(double a, double b, Func<double, double> function, double step, int threadsnumber)
     {
-        double result = 0;
         double stepIntegral = (b - a) / threadsnumber;
-        Parallel.For(0, threadsnumber, new ParallelOptions { MaxDegreeOfParallelism = threadsnumber }, i =>
-        {
-            double start = a + i * stepIntegral;
-            double end = 0;
-            if (start + stepIntegral >= b)
-            {
-                end = b;
-            }
-            else
-            {
-                end = start + stepIntegral;
-            }
 
-            double newIntegar = Integral(start, end, function, step);
-            double initial;
-            double newresult;
-            do
-            {
-                initial = result;
-                newresult = initial + newIntegar;
-            }
-            while (initial != Interlocked.CompareExchange(ref result, newresult, initial));
-
-        });
-        return result;
+        return Enumerable.Range(0, threadsnumber)
+                         .AsParallel()
+                         .WithDegreeOfParallelism(threadsnumber)
+                         .Select(i =>
+                         {
+                             double start = a + i * stepIntegral;
+                             double end = (i == threadsnumber - 1) ? b : start + stepIntegral;
+                             return Integral(start, end, function, step);
+                         })
+                         .Sum();
     }
 
     public static double Integral(double a, double b, Func<double, double> function, double step)
