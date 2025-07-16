@@ -6,8 +6,8 @@ class Program
 {
     static void Main()
     {
-        double start = -1000;
-        double end = 1000;
+        double start = -100;
+        double end = 100;
         var SIN = (double x) => Math.Sin(x);
 
         double[] steps = { 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6 };
@@ -24,18 +24,18 @@ class Program
             }
         });
 
-        int[] threadsnumbers = { 1, 2, 3, 4, 5, 6};
+        int[] threadsnumbers = { 2, 3, 4, 5, 6};
         Dictionary<int, double> FlowDependentSpeed = new Dictionary<int, double>();
         threadsnumbers.ToList().ForEach(threadnumber =>
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            for (int i = 0; i < 100; i++) 
+            for (int i = 0; i < 50; i++) 
             {
                 DefiniteIntegral.Solve(start, end, SIN, minstep, threadnumber);
             }
             stopwatch.Stop();
-            FlowDependentSpeed[threadnumber] = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency * 1000 / 100;
+            FlowDependentSpeed[threadnumber] = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency * 1000 / 50;
         });
 
         var plt = new Plot();
@@ -50,14 +50,14 @@ class Program
 
 
         double timeIntegral = 0;
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
-        for (int i = 0; i < 100; i++) 
+        Stopwatch stopwatch1 = new Stopwatch();
+        stopwatch1.Start();
+        for (int i = 0; i < 50; i++) 
         {
             DefiniteIntegral.Integral(start, end, SIN, minstep);
         }
-        stopwatch.Stop();
-        timeIntegral = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency * 1000 / 100;
+        stopwatch1.Stop();
+        timeIntegral = (double)stopwatch1.ElapsedTicks / Stopwatch.Frequency * 1000 / 50;
 
         var percent = FlowDependentSpeed.Values.Min() / timeIntegral * 100;
         if (percent > 15) 
