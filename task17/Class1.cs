@@ -8,6 +8,7 @@ namespace task17
         public bool softStopRequest;
         public Thread? thread;
         ExceptionHandler handler = new ExceptionHandler();
+        public Scheduler scheduler = new Scheduler();
         public void ServerStart()
         {
             launched = true;
@@ -18,30 +19,53 @@ namespace task17
 
         public void ServerRun()
         {
+            bool alternation = false;
             while (launched)
             {
-                var command = queue.Take();
-                try
-                {
-                    command.Execute();
-                }
-                catch (Exception ex)
-                {
-                    handler.Handle(command, ex);
-                }
-                if (softStopRequest == true && queue.Count == 0)
+                if (softStopRequest == true && queue.Count == 0 && scheduler.commandsInScheduler.Count == 0)
                 {
                     launched = false;
-                    thread!.Interrupt();
+                    thread?.Interrupt();
+                    break;
+                }
+                if (queue.Count > 0 && (scheduler.commandsInScheduler.Count == 0 || alternation))
+                {
+                    var command = queue.Take();
+                    try
+                    {
+                        command.Execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        handler.Handle(command, ex);
+                    }
+                    alternation = false;
+                }
+                else if (scheduler.commandsInScheduler.Count > 0)
+                {
+                    var command = (ILongCommand)scheduler.Select();
+                    command.Execute();
+
+                    if (!command.complete)
+                    {
+                        scheduler.Add(command);
+                    }
+                    alternation = true;
                 }
             }
         }
+        
 
         public void AddCommandToQueue(ICommand command)
         {
-            if (softStopRequest == false && launched == true)
+            if (softStopRequest == false && launched == true && !(command is ILongCommand longCommand))
             {
                 queue.Add(command);
+                return;
+            }
+            if (softStopRequest == false && launched == true && command is ILongCommand longCommand1)
+            {
+                scheduler.Add(command);
                 return;
             }
             throw new InvalidOperationException("Поток завершен или выполняется завершение потока");
@@ -93,5 +117,27 @@ namespace task17
             }
             serverThread.softStopRequest = true;
         }
-    } 
+    }
+
+    public class Scheduler : IScheduler
+    {
+        public ConcurrentQueue<ICommand> commandsInScheduler = new ConcurrentQueue<ICommand>();
+        public bool HasCommand()
+            => (commandsInScheduler.Count > 0);
+
+        public ICommand Select()
+        {
+            if (commandsInScheduler.TryDequeue(out ICommand? command))
+            {
+                return command;
+            }
+            else
+            {
+                throw new InvalidOperationException("Error");
+            }
+        }
+
+        public void Add(ICommand command)
+            => commandsInScheduler.Enqueue(command);
+    }
 }

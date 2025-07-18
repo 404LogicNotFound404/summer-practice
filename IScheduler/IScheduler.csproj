@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IComandInterface\IComandInterface.csproj" />
-    <ProjectReference Include="..\IScheduler\IScheduler.csproj" />
   </ItemGroup>
 
 </Project>
