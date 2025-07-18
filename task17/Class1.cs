@@ -22,13 +22,13 @@ namespace task17
             bool alternation = false;
             while (launched)
             {
-                if (softStopRequest == true && queue.Count == 0 && scheduler.commandsInScheduler.Count == 0)
+                if (softStopRequest == true && queue.Count == 0 && !scheduler.HasCommand())
                 {
                     launched = false;
                     thread?.Interrupt();
                     break;
                 }
-                if (queue.Count > 0 && (scheduler.commandsInScheduler.Count == 0 || alternation))
+                if (queue.Count > 0 && (!scheduler.HasCommand() || alternation))
                 {
                     var command = queue.Take();
                     try
@@ -41,7 +41,7 @@ namespace task17
                     }
                     alternation = false;
                 }
-                else if (scheduler.commandsInScheduler.Count > 0)
+                else if (scheduler.HasCommand())
                 {
                     var command = (ILongCommand)scheduler.Select();
                     command.Execute();
