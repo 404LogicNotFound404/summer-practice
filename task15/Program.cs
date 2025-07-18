@@ -42,7 +42,7 @@ class Program
         plt.Add.Scatter(FlowDependentSpeed.Keys.ToArray(), FlowDependentSpeed.Values.ToArray());
         plt.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(1);
         plt.XLabel("Количество потоков");
-        plt.YLabel("Время в миллисекундах");
+        plt.YLabel("Время в секундах");
 
         string path = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))))!;
         plt.SavePng(Path.Combine(path,"info.png"), 600, 400);
